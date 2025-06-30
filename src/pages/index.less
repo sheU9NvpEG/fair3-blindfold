@@ -1,0 +1,330 @@
+.avatar-editor {
+  background: #000;
+  color: #fff;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  text-align: center;
+  
+  h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .controls {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+
+    .btn {
+      background: #555;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+
+      &:hover:not(:disabled) {
+        background: #666;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      &:disabled {
+        background: #333;
+        color: #666;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      &.download-btn {
+        background: #2d5aa0;
+        
+        &:hover:not(:disabled) {
+          background: #3d6ab0;
+        }
+      }
+    }
+  }
+
+  .options {
+    margin-bottom: 30px;
+
+    .tips {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #ccc;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 8px 16px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+      }
+    }
+  }
+
+  .welcome-message {
+    margin-top: 40px;
+    p {
+      font-size: 18px;
+      color: #999;
+      font-style: italic;
+    }
+  }
+
+  .canvas-container {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+
+    canvas {
+      display: block;
+      max-width: 100%;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      cursor: crosshair;
+    }
+
+    .glasses-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+
+      .glasses {
+        position: absolute;
+        pointer-events: all;
+        cursor: move;
+        user-select: none;
+        transition: all 0.1s ease;
+
+        &.selected {
+          z-index: 10;
+        }
+
+        &.dragging {
+          cursor: grabbing;
+          z-index: 100;
+          transition: none;
+        }
+
+        .glasses-frame {
+          font-size: 50px;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+          filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+          transition: all 0.3s ease;
+        }
+
+        .controls-overlay {
+          position: absolute;
+          top: -60px;
+          left: 50%;
+          display: flex;
+          gap: 5px;
+          background: rgba(0, 0, 0, 0.85);
+          padding: 10px;
+          border-radius: 10px;
+          backdrop-filter: blur(15px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+          button {
+            background: #444;
+            color: #fff;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+              background: #555;
+              transform: scale(1.1);
+            }
+
+            &.delete-btn {
+              background: #d32f2f;
+              
+              &:hover {
+                background: #f44336;
+              }
+            }
+          }
+        }
+
+        &:hover {
+          filter: drop-shadow(0 0 15px rgba(45, 90, 160, 0.5));
+          
+          .glasses-frame {
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .avatar-editor {
+    padding: 10px;
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .controls {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+
+      .btn {
+        width: 200px;
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+    }
+
+    .options {
+      .tips {
+        flex-direction: column;
+        gap: 10px;
+        
+        p {
+          font-size: 12px;
+          padding: 6px 12px;
+        }
+      }
+    }
+
+    .canvas-container {
+      canvas {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+      }
+
+      .glasses-overlay {
+        .glasses {
+          .glasses-frame {
+            font-size: 40px;
+          }
+
+          .controls-overlay {
+            top: -50px;
+            padding: 8px;
+            gap: 3px;
+
+            button {
+              width: 28px;
+              height: 28px;
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Loading animation
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loading {
+  animation: pulse 2s infinite;
+}
+
+// Dragging styles
+.dragging {
+  cursor: grabbing !important;
+  z-index: 100;
+  
+  .glasses-frame {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+// Selected state highlight effects
+.glasses.selected {
+  animation: selectedGlow 2s infinite alternate;
+}
+
+@keyframes selectedGlow {
+  from {
+    filter: drop-shadow(0 0 10px rgba(45, 90, 160, 0.5));
+  }
+  to {
+    filter: drop-shadow(0 0 20px rgba(45, 90, 160, 0.8));
+  }
+}
+
+// Floating hint animation
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.welcome-message {
+  animation: float 3s ease-in-out infinite;
+}
+
+// Button click feedback
+.btn:active {
+  transform: translateY(1px) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+// Glasses addition animation
+@keyframes glassesAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.glasses:last-child {
+  animation: glassesAppear 0.3s ease-out;
+} 
